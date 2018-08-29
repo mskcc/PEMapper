@@ -164,7 +164,7 @@ for FASTQ1 in $FASTQFILES; do
         bwa mem $BWA_OPTS -t $BWA_THREADS $GENOME_BWA $CLIPSEQ1 $CLIPSEQ2 \>\>$SCRATCH/${BASE1%%.fastq*}.sam
 
     QRUN 4 ${TAG}_MAP_03__$UUID HOLD ${TAG}_MAP_02__$UUID VMEM 33 \
-        picard.local AddOrReplaceReadGroups MAX_RECORDS_IN_RAM=5000000 CREATE_INDEX=true SO=coordinate \
+        picardV2 AddOrReplaceReadGroups MAX_RECORDS_IN_RAM=5000000 CREATE_INDEX=true SO=coordinate \
         LB=$SAMPLENAME PU=${BASE1%%_R1_*} SM=$SAMPLENAME PL=illumina CN=GCL \
         I=$SCRATCH/${BASE1%%.fastq*}.sam O=$SCRATCH/${BASE1%%.fastq*}.bam
 
@@ -186,30 +186,30 @@ BWATAG=$(echo $BWA_OPTS | perl -pe 's/-//g' | tr ' ' '_')
 OUTDIR=out___$BWATAG
 mkdir -p $OUTDIR
 QRUN 4 ${TAG}__04__MERGE HOLD "${TAG}_MAP_*"  VMEM 33 LONG \
-    picard.local MergeSamFiles SO=coordinate CREATE_INDEX=true \
+    picardV2 MergeSamFiles SO=coordinate CREATE_INDEX=true \
     O=$OUTDIR/${SAMPLENAME}.bam $INPUTS
 
 QRUN 4 ${TAG}__05__STATS HOLD ${TAG}__04__MERGE VMEM 33 LONG \
-    picard.local CollectAlignmentSummaryMetrics \
+    picardV2 CollectAlignmentSummaryMetrics \
     I=$OUTDIR/${SAMPLENAME}.bam O=$OUTDIR/${SAMPLENAME}___AM.txt \
     R=$GENOME_FASTA \
     LEVEL=null LEVEL=SAMPLE
 
 QRUN 4 ${TAG}__05__STATS HOLD ${TAG}__04__MERGE VMEM 33 LONG \
-    picard.local CollectInsertSizeMetrics \
+    picardV2 CollectInsertSizeMetrics \
     I=$OUTDIR/${SAMPLENAME}.bam O=$OUTDIR/${SAMPLENAME}___INS.txt \
 	H=$OUTDIR/${SAMPLENAME}___INSHist.pdf \
     R=$GENOME_FASTA
 
 QRUN 4 ${TAG}__05__STATS HOLD ${TAG}__04__MERGE VMEM 33 LONG \
-    picard.local CollectGcBiasMetrics \
+    picardV2 CollectGcBiasMetrics \
     I=$OUTDIR/${SAMPLENAME}.bam O=$OUTDIR/${SAMPLENAME}___GCB.txt \
     CHART=$OUTDIR/${SAMPLENAME}___GCB.pdf \
     S=$OUTDIR/${SAMPLENAME}___GCBsummary.txt \
     R=$GENOME_FASTA
 
 QRUN 4 ${TAG}__05__STATS HOLD ${TAG}__04__MERGE VMEM 33 LONG \
-    picard.local CollectWgsMetrics \
+    picardV2 CollectWgsMetrics \
     I=$OUTDIR/${SAMPLENAME}.bam O=$OUTDIR/${SAMPLENAME}___WGS.txt \
     R=$GENOME_FASTA
 
