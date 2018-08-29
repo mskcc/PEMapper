@@ -1,6 +1,6 @@
 #!/bin/bash
 JAVA=/opt/common/CentOS_6/java/jdk1.8.0_31/bin/java
-PICARDJAR=/opt/common/CentOS_6/picard/picard-2.9.0-jar/
+PICARDJAR=/opt/common/CentOS_6/picard/picard-2.9.0-jar/picard.jar
 COMMAND=$1
 shift
 
