@@ -1,0 +1,35 @@
+#!/bin/bash
+JAVA=/opt/common/CentOS_6/java/jdk1.8.0_31/bin/java
+PICARDJAR=/opt/common/CentOS_6/picard/picard-2.9.0-jar/picard.jar
+
+TMPDIR=/scratch/$USER
+mkdir -p $TMPDIR
+
+COMMAND=$1
+
+if [ "$COMMAND" == "" ]; then
+    $JAVA -jar $PICARDJAR 2>&1 | less -R
+    exit
+fi
+
+if [ "$COMMAND" == "LSF" ]; then
+    COMMAND=$2
+    shift 2
+    BSUB="YES"
+else
+    shift
+    BSUB="NO"
+fi
+
+if [ $BSUB == "YES" ]; then
+
+    bsub -o LSF.PIC/ -J PIC_${COMMAND}_$$ -R "rusage[mem=32]" -M 33 -n 4 \
+        $JAVA -Xmx30g -Djava.io.tmpdir=$TMPDIR \
+            -jar $PICARDJAR $COMMAND TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=SILENT $*
+
+else
+
+    $JAVA -Xmx30g -Djava.io.tmpdir=$TMPDIR \
+        -jar $PICARDJAR $COMMAND TMP_DIR=$TMPDIR VALIDATION_STRINGENCY=SILENT $*
+
+fi
