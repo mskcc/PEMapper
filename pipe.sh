@@ -217,23 +217,23 @@ QRUN 4 ${TAG}__05__DOWN HOLD ${TAG}__04__MERGE VMEM 33 LONG \
     O=$OUTDIR/${SAMPLENAME}___Dn10.bam \
     P=0.1 CREATE_INDEX=true
 
-QRUN 4 ${TAG}__06__MD HOLD ${TAG}__05__DOWN VMEM 33 LONG \
-    picardV2 MarkDuplicates \
-    I=$OUTDIR/${SAMPLENAME}___Dn10.bam \
-    O=$OUTDIR/${SAMPLENAME}___MD.bam \
-    M=$OUTDIR/${SAMPLENAME}___MD.txt \
-    CREATE_INDEX=true \
-    R=$GENOME_FASTA
+#QRUN 4 ${TAG}__05__MD HOLD ${TAG}__05__DOWN VMEM 33 LONG \
+#    picardV2 MarkDuplicates \
+#    I=$OUTDIR/${SAMPLENAME}___Dn10.bam \
+#    O=$OUTDIR/${SAMPLENAME}___MD.bam \
+#    M=$OUTDIR/${SAMPLENAME}___MD.txt \
+#    CREATE_INDEX=true \
+#    R=$GENOME_FASTA
 
 if [ "$DBSNP" != "" ]; then
-    QRUN 4 ${TAG}__06__OXO HOLD ${TAG}__05__DOWN VMEM 33 LONG \
+    QRUN 4 ${TAG}__05__OXO HOLD ${TAG}__05__DOWN VMEM 33 LONG \
         picardV2  CollectOxoGMetrics \
         R=$GENOME_FASTA \
         DB_SNP=$DBSNP \
         I=$OUTDIR/${SAMPLENAME}___Dn10.bam \
         O=$OUTDIR/${SAMPLENAME}___OxoG.txt
 else
-    QRUN 4 ${TAG}__06__OXO HOLD ${TAG}__05__DOWN VMEM 33 LONG \
+    QRUN 4 ${TAG}__05__OXO HOLD ${TAG}__05__DOWN VMEM 33 LONG \
         picardV2  CollectOxoGMetrics \
         R=$GENOME_FASTA \
         I=$OUTDIR/${SAMPLENAME}___Dn10.bam \
