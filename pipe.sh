@@ -219,7 +219,7 @@ QRUN 4 ${TAG}__05__DOWN HOLD ${TAG}__04__MERGE VMEM 33 LONG \
 
 QRUN 4 ${TAG}__05__MD HOLD ${TAG}__05__DOWN VMEM 33 LONG \
     picardV2 MarkDuplicates \
-    I=$OUTDIR/${SAMPLENAME}___Dn10.bam \
+    I=$OUTDIR/${SAMPLENAME}.bam \
     O=$OUTDIR/${SAMPLENAME}___MD.bam \
     M=$OUTDIR/${SAMPLENAME}___MD.txt \
     CREATE_INDEX=true \
