@@ -31,7 +31,7 @@ QRUN () {
         echo VMEM=$VMEM
     fi
 
-    TIME="-We 59"
+    TIME="-We 119"
     if [ "$1" == "LONG" ]; then
         TIME=""
         shift 1
